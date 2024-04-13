@@ -28,5 +28,20 @@ function getCurrentCpuUsage() {
   return cpuUsage * 100
 }
 
-module.exports = { getCurrentCpuUsage }
+function getServerUsage() {
+  const cpuUsage = getCurrentCpuUsage()
+  const totalMem = os.totalmem()
+  const freeMem = os.freemem()
+  const usedMem = totalMem - freeMem
+  const totalMemGB = totalMem / 1024 / 1024 / 1024
+  const usedMemGB = usedMem / 1024 / 1024 / 1024
+
+  return {
+    cpuUsage,
+    usedMem: usedMemGB,
+    totalMem: totalMemGB
+  }
+}
+
+module.exports = { getCurrentCpuUsage, getServerUsage }
 

@@ -32,7 +32,7 @@ function startServer(eventManager) {
       type: 'heap',
       data: serverUsage
     })
-  }, 1000)
+  }, 3000)
 
   // Maneja el cierre del proceso hijo
   childProcess.on('close', (code) => {

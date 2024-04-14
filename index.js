@@ -2,6 +2,7 @@ const WebSocket = require('ws')
 const EventManager = require('./utils/EventManager')
 const { startServer } = require('./utils/mcserver-utils')
 const { sendMessage } = require('./utils/ws-utils')
+const fs = require('fs')
 
 // Crea un servidor WebSocket en el puerto 8080
 const wss = new WebSocket.Server({ port: 8080 })
@@ -43,12 +44,6 @@ wss.on('connection', (ws) => {
       case 'start':
         if (childProcess) {
           console.log('El servidor ya está en ejecución')
-          eventManager.emit('server', {
-            stream: 'server',
-            type: 'error',
-            data: 'El servidor ya está en ejecución'
-          })
-
           return
         }
 
@@ -63,12 +58,6 @@ wss.on('connection', (ws) => {
       case 'stop':
         if (!childProcess) {
           console.log('No hay ningún servidor en ejecución')
-          eventManager.emit('server', {
-            stream: 'server',
-            type: 'error',
-            data: 'No hay ningún servidor en ejecución'
-          })
-
           return
         }
 
@@ -79,14 +68,12 @@ wss.on('connection', (ws) => {
           data: {}
         })
 
+        childProcess = null
+
         break
       case 'subscribe':
         if (!('type' in msgJson)) {
-          eventManager.emit('server', {
-            stream: 'server',
-            type: 'error',
-            data: 'Debe indicar el tipo de evento'
-          })
+          console.log('Debe indicar el tipo de evento')
           return
         }
 
@@ -94,24 +81,13 @@ wss.on('connection', (ws) => {
           case 'console':
             // Suscribir una función al evento "console"
             eventManager.subscribe(msgJson.type, callbackSendMessage)
-            sendMessage(ws, {
-              stream: 'server',
-              type: 'subscription',
-              data: `Suscrito al evento '${msgJson.type}'`
-            })
-
             break
 
           case 'heap':
             // Suscribir una función al evento "server"
             eventManager.subscribe(msgJson.type, callbackSendMessage)
-            sendMessage(ws, {
-              stream: 'server',
-              type: 'subscription',
-              data: `Suscrito al evento '${msgJson.type}'`
-            })
             break
-          
+
           default:
             break
         }
@@ -119,11 +95,7 @@ wss.on('connection', (ws) => {
         break
       case 'unsubscribe':
         if (!('type' in msgJson)) {
-          eventManager.emit('server', {
-            stream: 'server',
-            type: 'error',
-            data: 'Debe indicar el tipo de evento'
-          })
+          console.log('Debe indicar el tipo de evento')
           return
         }
 
@@ -131,23 +103,13 @@ wss.on('connection', (ws) => {
           case 'console':
             // Desuscribir una función del evento "console"
             eventManager.unsubscribe(msgJson.type, callbackSendMessage)
-            sendMessage(ws, {
-              stream: 'server',
-              type: 'subscription',
-              data: `Desuscrito del evento '${msgJson.type}'`
-            })
             break
-          
+
           case 'heap':
             // Desuscribir una función del evento "server"
             eventManager.unsubscribe(msgJson.type, callbackSendMessage)
-            sendMessage(ws, {
-              stream: 'server',
-              type: 'subscription',
-              data: `Desuscrito del evento '${msgJson.type}'`
-            })
             break
-          
+
           default:
             break
         }
@@ -155,11 +117,6 @@ wss.on('connection', (ws) => {
         break
       default:
         console.log(`Acción no reconocida`)
-        sendMessage('server', {
-          stream: 'server',
-          type: 'error',
-          data: 'Acción no reconocida'
-        })
         break
     }
   })

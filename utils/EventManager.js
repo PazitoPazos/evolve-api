@@ -12,16 +12,17 @@ class EventManager {
       return
     }
 
+    // Obtener el conjunto de callbacks para este tipo de evento
     const eventCallbacks = this.subscriptions.get(eventType)
 
-    // Verificar si el callback ya está suscrito para este evento
+    // Verificar si el callback ya está suscrito
     if (eventCallbacks.has(callback)) {
-      console.warn(`El callback ya está suscrito para el evento '${eventType}'`)
+      console.warn(`El callback ya está suscrito al evento '${eventType}'`)
       return
     }
 
     // Agregar la función de callback a las suscripciones
-    this.subscriptions.get(eventType).add(callback)
+    eventCallbacks.add(callback)
 
     // Si hay mensajes almacenados para este tipo de evento, se los envía a la nueva suscripción
     if (this.eventData.has(eventType)) {
@@ -35,7 +36,8 @@ class EventManager {
   // Desuscribe una función del evento especificado
   unsubscribe(eventType, callback) {
     if (this.subscriptions.has(eventType)) {
-      this.subscriptions.get(eventType).delete(callback)
+      const eventCallbacks = this.subscriptions.get(eventType)
+      eventCallbacks.delete(callback)
     }
   }
 

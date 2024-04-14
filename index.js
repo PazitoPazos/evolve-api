@@ -32,11 +32,7 @@ wss.on('connection', (ws) => {
     const msgJson = JSON.parse(message.toString())
 
     if (!('action' in msgJson)) {
-      eventManager.emit('server', {
-        stream: 'server',
-        type: 'error',
-        data: 'No se reconoce ese comando'
-      })
+      console.log('No se reconoce ese comando')
       return
     }
 
@@ -48,7 +44,7 @@ wss.on('connection', (ws) => {
         }
 
         childProcess = startServer(eventManager)
-        eventManager.emit('server', {
+        sendMessage(ws, {
           stream: 'console',
           type: 'started',
           data: {}
@@ -62,7 +58,7 @@ wss.on('connection', (ws) => {
         }
 
         childProcess.stdin.write('stop\n')
-        eventManager.emit('server', {
+        sendMessage(ws, {
           stream: 'console',
           type: 'stopped',
           data: {}
@@ -114,6 +110,23 @@ wss.on('connection', (ws) => {
             break
         }
 
+        break
+      case 'log':
+        // Ruta al archivo que deseas vigilar
+        const filePath = '/mcserver/logs/latest.log'
+
+        fs.readFile(filePath, 'utf8', (err, data) => {
+          if (err) {
+            console.error(err)
+            return
+          }
+
+          sendMessage(ws, {
+            stream: 'log',
+            type: 'log',
+            data: data
+          })
+        })
         break
       default:
         console.log(`Acción no reconocida`)

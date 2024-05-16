@@ -2,7 +2,7 @@ const { spawn } = require('child_process')
 const { getServerUsage } = require('./utils')
 
 function startServer(eventManager) {
-  const childProcess = spawn('bash', ['start.sh'], { cwd: '/home/mcadmin' })
+  const childProcess = spawn('bash', ['start.sh'], { cwd: process.env.HOME })
   eventManager.eventData = new Map()
 
   // Maneja los datos de salida del proceso hijo

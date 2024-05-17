@@ -25,7 +25,7 @@ To run this API, you will need to have the following installed on your system:
     cd evolve-api
     ```
 
-3. Install dependences:
+3. Install dependencies:
 
     ```bash
     npm install

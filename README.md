@@ -4,6 +4,11 @@
 
 This repository is part of the Evolve project. It contains the API that receives requests from the client, in this case the middleware, to execute the corresponding commands on the server where the Minecraft server is located.
 
+## Related repos
+ - [Evolve](https://github.com/PazitoPazos/evolve)
+ - [Evolve Middleware](https://github.com/PazitoPazos/evolve-middleware)
+ - [Evolve Vagrant](https://github.com/PazitoPazos/evolve-vagrant)
+
 ## Requirements
 
 To run this API, you will need to have the following installed on your system:
@@ -11,7 +16,7 @@ To run this API, you will need to have the following installed on your system:
 - NodeJS 17+
 - `ws` package
 
-## Installation
+## Setup
 
 1. Clone this repository on your local machine:
 

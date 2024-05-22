@@ -13,7 +13,7 @@ This repository is part of the Evolve project. It contains the API that receives
 
 To run this API, you will need to have the following installed on your system:
 
-- NodeJS 17+
+- NodeJS 20+
 - `ws` package
 
 ## Setup

@@ -4,6 +4,8 @@
 
 This repository is part of the Evolve project. It contains the API that receives requests from the client, in this case the middleware, to execute the corresponding commands on the server where the Minecraft server is located.
 
+If you want install the API with a functional server go to Evolve Vagrant's repo.
+
 ## Related repos
  - [Evolve](https://github.com/PazitoPazos/evolve)
  - [Evolve Middleware](https://github.com/PazitoPazos/evolve-middleware)

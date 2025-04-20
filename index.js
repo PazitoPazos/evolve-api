@@ -1,11 +1,17 @@
 const express = require('express');
 const http = require('http');
+const cors = require('cors');
 const WebSocket = require('ws')
 const apiRoutes = require('./routes/api');
 const EventManager = require('./utils/EventManager')
 const handleWSConnection = require('./ws/handler');
 
 const app = express();
+
+// CORS
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
 // Rutas API
 app.use('/api', apiRoutes);
